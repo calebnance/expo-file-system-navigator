@@ -73,17 +73,17 @@ class FileSystemNavigator extends React.Component {
     // console.log(dirArray);
     // console.log('=================');
 
-    // console.log('docDir');
-    // console.log(docDir);
-    // console.log('=================');
+    console.log('docDir');
+    console.log(docDir);
+    console.log('=================');
 
     // does document directory exist?
     if (docDir.exists) {
       // get directory contents
       const docDirContents = await FileSystem.readDirectoryAsync(currentDir);
-      // console.log('docDirContents');
-      // console.log(docDirContents);
-      // console.log('=================');
+      console.log('docDirContents');
+      console.log(docDirContents);
+      console.log('=================');
 
       // const returnedData = await Promise.all(
       //   Object.keys(docDirContents).map(async (item) => {
@@ -172,7 +172,7 @@ class FileSystemNavigator extends React.Component {
           <View style={styles.containerCreateDirectoryPreview}>
             <Text>Will create:</Text>
             <Text style={styles.textFormatted}>
-              {`/${dirActive}/${textFormatted}/`}
+              {`${dirActive}/${textFormatted}/`}
             </Text>
           </View>
         )}
@@ -216,6 +216,10 @@ class FileSystemNavigator extends React.Component {
           <ScrollView contentContainerStyle={styles.containerDirectory}>
             {dirContents &&
               dirContents.map((item, index) => {
+                console.log('item', item);
+                console.log('---------------------');
+                const isFile = item.includes('.');
+
                 return (
                   <TouchableOpacity
                     activeOpacity={gStyle.activeOpacity}
@@ -232,13 +236,28 @@ class FileSystemNavigator extends React.Component {
                     }}
                     style={styles.lineItem}
                   >
-                    <SvgFolder size={18} />
+                    {isFile === false && <SvgFolder size={18} />}
                     <Text style={styles.lineItemText}>{item}</Text>
                   </TouchableOpacity>
                 );
               })}
           </ScrollView>
         </View>
+
+        <Button
+          onPress={async () => {
+            console.log('hello');
+            const response = await FileSystem.downloadAsync(
+              'https://calebnance.com/images/caleb-nance.jpg',
+              `${FileSystem.documentDirectory}caleb-nance.jpg`
+            );
+            console.log('response');
+            console.log(response);
+            console.log('==============');
+            this.displayDirectory();
+          }}
+          title="Download File"
+        />
       </View>
     );
   }
