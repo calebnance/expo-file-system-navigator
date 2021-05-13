@@ -1,11 +1,12 @@
 {
   "expo": {
-    "name": "Quick Prototype",
-    "slug": "expo-quick-prototype",
+    "name": "Expo File System Navigator",
+    "scheme": "expo-file-system-navigator",
+    "slug": "expo-file-system-navigator",
     "privacy": "public",
     "version": "0.0.1",
     "platforms": ["android", "ios", "web"],
-    "githubUrl": "https://github.com/calebnance/expo-quick-prototype",
+    "githubUrl": "https://github.com/calebnance/expo-file-system-navigator",
     "orientation": "portrait",
     "primaryColor": "#0f4c75",
     "icon": "src/assets/icon.png",

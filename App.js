@@ -23,6 +23,12 @@ class App extends React.Component {
         <AppLoading
           onError={() => {
             // console.warn
+            /*
+            documents
+            images
+            unorganized
+            videos
+            */
           }}
           onFinish={() => this.setState({ isLoading: false })}
           startAsync={func.loadAssetsAsync}

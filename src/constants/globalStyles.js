@@ -76,6 +76,7 @@ export default {
   mB2: { marginBottom: space2 },
   mH1: { marginHorizontal: space1 },
   mH2: { marginHorizontal: space2 },
+  mLHalf: { marginLeft: spaceHalf },
   mL1: { marginLeft: space1 },
   mL2: { marginLeft: space2 },
   mR1: { marginRight: space1 },
@@ -88,6 +89,8 @@ export default {
 
   // padding
   // ///////////////////////////////////////////////////////////////////////////
+  p1: { padding: space1 },
+  p2: { padding: space2 },
   pB1: { paddingBottom: space1 },
   pB2: { paddingBottom: space2 },
   pH1: { paddingHorizontal: space1 },
@@ -105,12 +108,12 @@ export default {
   // spacers
   // ///////////////////////////////////////////////////////////////////////////
   spacer1: { height: space1 },
-  spacer12: { height: space12 },
-  spacer16: { height: space16 },
   spacer2: { height: space2 },
   spacer3: { height: space3 },
   spacer4: { height: space4 },
   spacer8: { height: space8 },
+  spacer12: { height: space12 },
+  spacer16: { height: space16 },
 
   // ///////////////////////////////////////////////////////////////////////////
   // react navigation (v.4) specific styling

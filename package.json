@@ -1,7 +1,7 @@
 {
-  "name": "expo-quick-prototype",
+  "name": "expo-file-system-navigator",
   "version": "0.0.1",
-  "description": "quick prototype template for expo/react native",
+  "description": "file system navigator for expo/react native",
   "author": "Caleb Nance",
   "license": "MIT",
   "keywords": [
@@ -29,6 +29,7 @@
     "expo": "^41.0.0",
     "expo-app-loading": "^1.0.1",
     "expo-asset": "~8.3.1",
+    "expo-file-system": "^11.0.2",
     "expo-font": "~9.1.0",
     "prop-types": "^15.7.2",
     "react": "16.13.1",
