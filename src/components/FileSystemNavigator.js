@@ -60,18 +60,18 @@ class FileSystemNavigator extends React.Component {
   }
 
   async displayDirectory() {
-    const { dirActive, dirArray, dirRoot } = this.state;
+    const { dirActive, dirRoot } = this.state;
 
     // console.log('dirRoot', dirRoot);
     const currentDir = `${dirRoot}${dirActive}`;
-    console.log('currentDir', currentDir);
+    // console.log('currentDir', currentDir);
 
     const docDir = await FileSystem.getInfoAsync(currentDir);
 
-    console.log('displayDirectory()');
-    console.log('dirArray');
-    console.log(dirArray);
-    console.log('=================');
+    // console.log('displayDirectory()');
+    // console.log('dirArray');
+    // console.log(dirArray);
+    // console.log('=================');
 
     // console.log('docDir');
     // console.log(docDir);
@@ -121,9 +121,9 @@ class FileSystemNavigator extends React.Component {
 
     const newDirectoryPath = `${dirRoot}${dirActive}/${textFormatted}`;
 
-    console.log('textFormatted', textFormatted);
-    console.log('newDirectoryPath', newDirectoryPath);
-    console.log('=================');
+    // console.log('textFormatted', textFormatted);
+    // console.log('newDirectoryPath', newDirectoryPath);
+    // console.log('=================');
 
     const response = await FileSystem.makeDirectoryAsync(newDirectoryPath);
     console.log('response', response);
@@ -189,15 +189,12 @@ class FileSystemNavigator extends React.Component {
               activeOpacity={gStyle.activeOpacity}
               hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
               onPress={() => {
-                console.log('onPress::Home');
-                console.log('dirArray', dirArray);
-                console.log('dirActive', dirActive);
-                console.log('============');
                 dirArray.pop();
-                console.log('dirArray', dirArray);
-                console.log('============');
+
+                const newActiveDir = dirArray.join('/');
+
                 this.setState(
-                  { dirActive: '', dirArray },
+                  { dirActive: newActiveDir, dirArray },
                   this.displayDirectory
                 );
               }}
@@ -226,12 +223,10 @@ class FileSystemNavigator extends React.Component {
                     onPress={() => {
                       dirArray.push(item);
 
-                      console.log('dirArray', dirArray);
-                      // console.log('newDirArray', newDirArray);
-                      console.log('=================');
+                      const newActiveDir = dirArray.join('/');
 
                       this.setState(
-                        { dirActive: item, dirArray },
+                        { dirActive: newActiveDir, dirArray },
                         this.displayDirectory
                       );
                     }}
@@ -297,7 +292,7 @@ const styles = StyleSheet.create({
     fontSize: 12
   },
   containerDirectory: {
-    backgroundColor: '#909090'
+    // backgroundColor: '#909090'
   },
   lineItem: {
     ...gStyle.flexRowAlignCenter,
