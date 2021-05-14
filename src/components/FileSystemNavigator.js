@@ -9,12 +9,13 @@ import {
   View
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import { fonts, gStyle } from '../constants';
+import { fonts, func, gStyle } from '../constants';
 
 // icons
 import SvgCornerLeftUp from '../icons/Svg.CornerLeftUp';
 import SvgFolder from '../icons/Svg.Folder';
 import SvgHome from '../icons/Svg.Home';
+import SvgImage from '../icons/Svg.Image';
 
 class FileSystemNavigator extends React.Component {
   constructor() {
@@ -73,9 +74,9 @@ class FileSystemNavigator extends React.Component {
     // console.log(dirArray);
     // console.log('=================');
 
-    console.log('docDir');
-    console.log(docDir);
-    console.log('=================');
+    // console.log('docDir');
+    // console.log(docDir);
+    // console.log('=================');
 
     // does document directory exist?
     if (docDir.exists) {
@@ -88,11 +89,30 @@ class FileSystemNavigator extends React.Component {
       // const returnedData = await Promise.all(
       //   Object.keys(docDirContents).map(async (item) => {
       // const directory = docDirContents[item];
-      // const dirFullPath = `${currentDirectory}${directory}`;
+      // console.log('item', item);
+      // console.log('directory', directory);
+      // const dirFullPath = `${currentDir}${directory}`;
       // const dirInfo = await FileSystem.getInfoAsync(dirFullPath);
       // const dirContents = await FileSystem.readDirectoryAsync(dirFullPath);
       // console.log('dirInfo', dirInfo);
+      // console.log('currentDir', currentDir);
+      // console.log('dirFullPath', dirFullPath);
+      // console.log('size', func.bytesToSize(dirInfo.size));
+      // const timestamp = dirInfo.modificationTime;
+      // const date = new Date(timestamp * 1000);
+      // const iso = date
+      //   .toISOString()
+      //   .match(/(\d{4}\-\d{2}\-\d{2})T(\d{2}:\d{2}:\d{2})/);
+      // console.log('iso', iso);
+
+      // const utcSeconds = dirInfo.modificationTime;
+      // const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+      // d.setUTCSeconds(utcSeconds);
+      // console.log('d', d);
+
       // console.log('dirContents', dirContents);
+      // console.log('==================');
+      // console.log('==================');
       // console.log('==================');
       // const videoObj = videosObj[key];
       // const video = await Asset.fromModule(
@@ -107,6 +127,7 @@ class FileSystemNavigator extends React.Component {
       //   name: key,
       //   uri
       // };
+      // return false;
       //   })
       // );
 
@@ -216,8 +237,8 @@ class FileSystemNavigator extends React.Component {
           <ScrollView contentContainerStyle={styles.containerDirectory}>
             {dirContents &&
               dirContents.map((item, index) => {
-                console.log('item', item);
-                console.log('---------------------');
+                // console.log('item', item);
+                // console.log('---------------------');
                 const isFile = item.includes('.');
 
                 return (
@@ -236,7 +257,7 @@ class FileSystemNavigator extends React.Component {
                     }}
                     style={styles.lineItem}
                   >
-                    {isFile === false && <SvgFolder size={18} />}
+                    {isFile ? <SvgImage size={18} /> : <SvgFolder size={18} />}
                     <Text style={styles.lineItemText}>{item}</Text>
                   </TouchableOpacity>
                 );
