@@ -81,10 +81,20 @@ class FileSystemNavigator extends React.Component {
     // does document directory exist?
     if (docDir.exists) {
       // get directory contents
-      const docDirContents = await FileSystem.readDirectoryAsync(currentDir);
-      console.log('docDirContents');
-      console.log(docDirContents);
-      console.log('=================');
+      const dirContents = await FileSystem.readDirectoryAsync(currentDir);
+      // console.log('dirContents');
+      // console.log(dirContents);
+      // console.log('=================');
+
+      const directories = dirContents.filter((d) => d.includes('.') === false);
+      const files = dirContents.filter((f) => f.includes('.') === true);
+      const newContentsSorted = directories.sort().concat(files.sort());
+
+      // console.log('directories', directories.sort());
+      // console.log('files', files.sort());
+      // console.log('=================');
+      // console.log('newContentsSorted', newContentsSorted);
+      // console.log('=================');
 
       // const returnedData = await Promise.all(
       //   Object.keys(docDirContents).map(async (item) => {
@@ -132,7 +142,7 @@ class FileSystemNavigator extends React.Component {
       // );
 
       this.setState({
-        dirContents: docDirContents.sort()
+        dirContents: newContentsSorted
       });
     }
   }
@@ -267,7 +277,7 @@ class FileSystemNavigator extends React.Component {
 
         <Button
           onPress={async () => {
-            console.log('hello');
+            console.log('downloaded');
             const response = await FileSystem.downloadAsync(
               'https://calebnance.com/images/caleb-nance.jpg',
               `${FileSystem.documentDirectory}caleb-nance.jpg`
