@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {
   Button,
+  Image,
   ScrollView,
   StyleSheet,
   Text,
@@ -173,6 +174,7 @@ class FileSystemNavigator extends React.Component {
     const {
       dirActive,
       dirArray,
+      dirRoot,
       dirContents,
       text,
       textFormatted
@@ -244,12 +246,17 @@ class FileSystemNavigator extends React.Component {
             </View>
           </View>
 
-          <ScrollView contentContainerStyle={styles.containerDirectory}>
+          <ScrollView
+            contentContainerStyle={styles.containerDirectory}
+            showsVerticalScrollIndicator={false}
+          >
             {dirContents &&
               dirContents.map((item, index) => {
                 // console.log('item', item);
                 // console.log('---------------------');
                 const isFile = item.includes('.');
+                const isImage = /\.(gif|jpe?g|png|webp|bmp)$/i.test(item);
+                const pathToFile = `${dirRoot}${dirActive}${item}`;
 
                 return (
                   <TouchableOpacity
@@ -267,8 +274,21 @@ class FileSystemNavigator extends React.Component {
                     }}
                     style={styles.lineItem}
                   >
-                    {isFile ? <SvgImage size={18} /> : <SvgFolder size={18} />}
-                    <Text style={styles.lineItemText}>{item}</Text>
+                    <View style={gStyle.flexRowAlignCenter}>
+                      {isFile ? (
+                        <SvgImage size={18} />
+                      ) : (
+                        <SvgFolder size={18} />
+                      )}
+                      <Text style={styles.lineItemText}>{item}</Text>
+                    </View>
+
+                    {isImage && (
+                      <Image
+                        source={{ uri: pathToFile }}
+                        style={styles.imagePreview}
+                      />
+                    )}
                   </TouchableOpacity>
                 );
               })}
@@ -278,6 +298,7 @@ class FileSystemNavigator extends React.Component {
         <Button
           onPress={async () => {
             console.log('downloaded');
+
             const response = await FileSystem.downloadAsync(
               'https://calebnance.com/images/caleb-nance.jpg',
               `${FileSystem.documentDirectory}caleb-nance.jpg`
@@ -321,13 +342,13 @@ const styles = StyleSheet.create({
     ...gStyle.mH2,
     backgroundColor: '#393e46',
     borderRadius: 8,
-    height: 300,
+    height: 480,
     padding: 8
   },
   containerHeader: {
     ...gStyle.flexRowAlignCenter,
-    ...gStyle.mB2,
-    backgroundColor: '#999999'
+    backgroundColor: '#999999',
+    borderRadius: 4
   },
   headerIcon: {
     ...gStyle.mH1
@@ -345,17 +366,22 @@ const styles = StyleSheet.create({
     // backgroundColor: '#909090'
   },
   lineItem: {
-    ...gStyle.flexRowAlignCenter,
-    ...gStyle.mB1,
+    ...gStyle.flexRowSpace,
+    ...gStyle.mT1,
     ...gStyle.pH1,
     backgroundColor: '#0d1117',
     borderRadius: 4,
-    height: 48
+    height: 64
   },
   lineItemText: {
     ...gStyle.mL1,
     color: '#ffffff',
     fontFamily: fonts.sourceCodeProReg
+  },
+  imagePreview: {
+    borderRadius: 8,
+    height: 48,
+    width: 48
   }
 });
 
