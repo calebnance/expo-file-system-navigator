@@ -27,8 +27,11 @@ class FileSystemNavigator extends React.Component {
       dirArray: [],
       dirContents: null,
       dirRoot: FileSystem.documentDirectory,
+      imagePath:
+        'file:///var/mobile/Containers/Data/Application/63D513FF-585D-41E5-93A4-9B487153DBBA/Documents/ExponentExperienceData/%2540calebnance%252Fexpo-file-system-navigator/caleb-nance-01.jpg',
       text: null,
-      textFormatted: null
+      textFormatted: null,
+      viewImage: true
     };
 
     this.onChangeDirText = this.onChangeDirText.bind(this);
@@ -69,6 +72,13 @@ class FileSystemNavigator extends React.Component {
     // console.log('currentDir', currentDir);
 
     const docDir = await FileSystem.getInfoAsync(currentDir);
+
+    // const freeDiskStorage = await FileSystem.getFreeDiskStorageAsync();
+    // const totalDiskCapacity = await FileSystem.getTotalDiskCapacityAsync();
+    // console.log('freeDiskStorage', freeDiskStorage);
+    // console.log('bytesToSize', func.bytesToSize(freeDiskStorage));
+    // console.log('totalDiskCapacity', totalDiskCapacity);
+    // console.log('bytesToSize', func.bytesToSize(totalDiskCapacity));
 
     // console.log('displayDirectory()');
     // console.log('dirArray');
@@ -176,8 +186,10 @@ class FileSystemNavigator extends React.Component {
       dirArray,
       dirRoot,
       dirContents,
+      imagePath,
       text,
-      textFormatted
+      textFormatted,
+      viewImage
     } = this.state;
 
     return (
@@ -216,84 +228,99 @@ class FileSystemNavigator extends React.Component {
 
         <View style={gStyle.spacer2} />
 
-        <View style={styles.containerScrollView}>
-          <View style={styles.containerHeader}>
-            <TouchableOpacity
-              activeOpacity={gStyle.activeOpacity}
-              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
-              onPress={() => {
-                dirArray.pop();
+        {viewImage === false && (
+          <View style={styles.containerScrollView}>
+            <View style={styles.containerHeader}>
+              <TouchableOpacity
+                activeOpacity={gStyle.activeOpacity}
+                hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
+                onPress={() => {
+                  dirArray.pop();
 
-                const newActiveDir = dirArray.join('/');
+                  const newActiveDir = dirArray.join('/');
 
-                this.setState(
-                  { dirActive: newActiveDir, dirArray },
-                  this.displayDirectory
-                );
-              }}
-              style={styles.headerIcon}
-            >
-              {dirActive === '' ? (
-                <SvgHome fill="#ffffff" size={18} />
-              ) : (
-                <SvgCornerLeftUp fill="#ffffff" size={18} />
-              )}
-            </TouchableOpacity>
+                  this.setState(
+                    { dirActive: newActiveDir, dirArray },
+                    this.displayDirectory
+                  );
+                }}
+                style={styles.headerIcon}
+              >
+                {dirActive === '' ? (
+                  <SvgHome fill="#ffffff" size={18} />
+                ) : (
+                  <SvgCornerLeftUp fill="#ffffff" size={18} />
+                )}
+              </TouchableOpacity>
 
-            <View style={styles.headerPath}>
-              <Text style={styles.currentText}>Current path:</Text>
-              <Text style={styles.pathText}>{`/${dirActive}`}</Text>
+              <View style={styles.headerPath}>
+                <Text style={styles.currentText}>Current path:</Text>
+                <Text style={styles.pathText}>{`/${dirActive}`}</Text>
+              </View>
             </View>
-          </View>
+            <ScrollView
+              contentContainerStyle={styles.containerDirectory}
+              showsVerticalScrollIndicator={false}
+            >
+              {dirContents &&
+                dirContents.map((item, index) => {
+                  // console.log('item', item);
+                  // console.log('---------------------');
+                  const isFile = item.includes('.');
+                  const isImage = /\.(gif|jpe?g|png|webp|bmp)$/i.test(item);
+                  const pathToFile = `${dirRoot}${dirActive}${item}`;
 
-          <ScrollView
-            contentContainerStyle={styles.containerDirectory}
-            showsVerticalScrollIndicator={false}
-          >
-            {dirContents &&
-              dirContents.map((item, index) => {
-                // console.log('item', item);
-                // console.log('---------------------');
-                const isFile = item.includes('.');
-                const isImage = /\.(gif|jpe?g|png|webp|bmp)$/i.test(item);
-                const pathToFile = `${dirRoot}${dirActive}${item}`;
+                  return (
+                    <TouchableOpacity
+                      activeOpacity={gStyle.activeOpacity}
+                      key={index.toString()}
+                      onPress={() => {
+                        if (isImage) {
+                          this.setState({
+                            imagePath: pathToFile,
+                            viewImage: true
+                          });
+                        } else {
+                          dirArray.push(item);
 
-                return (
-                  <TouchableOpacity
-                    activeOpacity={gStyle.activeOpacity}
-                    key={index.toString()}
-                    onPress={() => {
-                      dirArray.push(item);
+                          const newActiveDir = dirArray.join('/');
 
-                      const newActiveDir = dirArray.join('/');
+                          this.setState(
+                            { dirActive: newActiveDir, dirArray },
+                            this.displayDirectory
+                          );
+                        }
+                      }}
+                      style={styles.lineItem}
+                    >
+                      <View style={gStyle.flexRowAlignCenter}>
+                        {isFile ? (
+                          <SvgImage size={18} />
+                        ) : (
+                          <SvgFolder size={18} />
+                        )}
+                        <Text style={styles.lineItemText}>{item}</Text>
+                      </View>
 
-                      this.setState(
-                        { dirActive: newActiveDir, dirArray },
-                        this.displayDirectory
-                      );
-                    }}
-                    style={styles.lineItem}
-                  >
-                    <View style={gStyle.flexRowAlignCenter}>
-                      {isFile ? (
-                        <SvgImage size={18} />
-                      ) : (
-                        <SvgFolder size={18} />
+                      {isImage && (
+                        <Image
+                          source={{ uri: pathToFile }}
+                          style={styles.imagePreview}
+                        />
                       )}
-                      <Text style={styles.lineItemText}>{item}</Text>
-                    </View>
+                    </TouchableOpacity>
+                  );
+                })}
+            </ScrollView>
+          </View>
+        )}
 
-                    {isImage && (
-                      <Image
-                        source={{ uri: pathToFile }}
-                        style={styles.imagePreview}
-                      />
-                    )}
-                  </TouchableOpacity>
-                );
-              })}
-          </ScrollView>
-        </View>
+        {viewImage && (
+          <View style={styles.containerImageView}>
+            <Image source={{ uri: imagePath }} style={styles.imageView} />
+            <Text style={styles.fileInfoText}>{imagePath}</Text>
+          </View>
+        )}
 
         <Button
           onPress={async () => {
@@ -382,6 +409,20 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     height: 48,
     width: 48
+  },
+  containerImageView: {
+    ...gStyle.p2,
+    backgroundColor: '#0d1117'
+  },
+  imageView: {
+    backgroundColor: '#909090',
+    height: 240,
+    resizeMode: 'contain',
+    width: '100%'
+  },
+  fileInfoText: {
+    color: '#ffffff',
+    fontFamily: fonts.sourceCodeProReg
   }
 });
 
