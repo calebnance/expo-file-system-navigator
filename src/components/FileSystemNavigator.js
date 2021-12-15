@@ -27,11 +27,10 @@ class FileSystemNavigator extends React.Component {
       dirArray: [],
       dirContents: null,
       dirRoot: FileSystem.documentDirectory,
-      imagePath:
-        'file:///var/mobile/Containers/Data/Application/63D513FF-585D-41E5-93A4-9B487153DBBA/Documents/ExponentExperienceData/%2540calebnance%252Fexpo-file-system-navigator/caleb-nance-01.jpg',
+      imagePath: null,
       text: null,
       textFormatted: null,
-      viewImage: true
+      viewImage: false
     };
 
     this.onChangeDirText = this.onChangeDirText.bind(this);
@@ -228,92 +227,94 @@ class FileSystemNavigator extends React.Component {
 
         <View style={gStyle.spacer2} />
 
-        {viewImage === false && (
-          <View style={styles.containerScrollView}>
-            <View style={styles.containerHeader}>
-              <TouchableOpacity
-                activeOpacity={gStyle.activeOpacity}
-                hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
-                onPress={() => {
-                  dirArray.pop();
+        <View style={styles.containerScrollView}>
+          <View style={styles.containerHeader}>
+            <TouchableOpacity
+              activeOpacity={gStyle.activeOpacity}
+              hitSlop={{ top: 10, left: 10, bottom: 10, right: 10 }}
+              onPress={() => {
+                dirArray.pop();
 
-                  const newActiveDir = dirArray.join('/');
+                const newActiveDir = dirArray.join('/');
 
-                  this.setState(
-                    { dirActive: newActiveDir, dirArray },
-                    this.displayDirectory
-                  );
-                }}
-                style={styles.headerIcon}
-              >
-                {dirActive === '' ? (
-                  <SvgHome fill="#ffffff" size={18} />
-                ) : (
-                  <SvgCornerLeftUp fill="#ffffff" size={18} />
-                )}
-              </TouchableOpacity>
-
-              <View style={styles.headerPath}>
-                <Text style={styles.currentText}>Current path:</Text>
-                <Text style={styles.pathText}>{`/${dirActive}`}</Text>
-              </View>
-            </View>
-            <ScrollView
-              contentContainerStyle={styles.containerDirectory}
-              showsVerticalScrollIndicator={false}
+                this.setState(
+                  { dirActive: newActiveDir, dirArray },
+                  this.displayDirectory
+                );
+              }}
+              style={styles.headerIcon}
             >
-              {dirContents &&
-                dirContents.map((item, index) => {
-                  // console.log('item', item);
-                  // console.log('---------------------');
-                  const isFile = item.includes('.');
-                  const isImage = /\.(gif|jpe?g|png|webp|bmp)$/i.test(item);
-                  const pathToFile = `${dirRoot}${dirActive}${item}`;
+              {dirActive === '' ? (
+                <SvgHome fill="#ffffff" size={18} />
+              ) : (
+                <SvgCornerLeftUp fill="#ffffff" size={18} />
+              )}
+            </TouchableOpacity>
 
-                  return (
-                    <TouchableOpacity
-                      activeOpacity={gStyle.activeOpacity}
-                      key={index.toString()}
-                      onPress={() => {
-                        if (isImage) {
-                          this.setState({
-                            imagePath: pathToFile,
-                            viewImage: true
-                          });
-                        } else {
-                          dirArray.push(item);
-
-                          const newActiveDir = dirArray.join('/');
-
-                          this.setState(
-                            { dirActive: newActiveDir, dirArray },
-                            this.displayDirectory
-                          );
-                        }
-                      }}
-                      style={styles.lineItem}
-                    >
-                      <View style={gStyle.flexRowAlignCenter}>
-                        {isFile ? (
-                          <SvgImage size={18} />
-                        ) : (
-                          <SvgFolder size={18} />
-                        )}
-                        <Text style={styles.lineItemText}>{item}</Text>
-                      </View>
-
-                      {isImage && (
-                        <Image
-                          source={{ uri: pathToFile }}
-                          style={styles.imagePreview}
-                        />
-                      )}
-                    </TouchableOpacity>
-                  );
-                })}
-            </ScrollView>
+            <View style={styles.headerPath}>
+              <Text style={styles.currentText}>Current path:</Text>
+              <Text style={styles.pathText}>{`/${dirActive}`}</Text>
+            </View>
           </View>
-        )}
+          <ScrollView
+            contentContainerStyle={styles.containerDirectory}
+            showsVerticalScrollIndicator={false}
+          >
+            {dirContents &&
+              dirContents.map((item, index) => {
+                // console.log('item', item);
+                // console.log('---------------------');
+                const isFile = item.includes('.');
+                const isImage = /\.(gif|jpe?g|png|webp|bmp)$/i.test(item);
+                const pathToFile = `${dirRoot}${dirActive}${item}`;
+
+                return (
+                  <TouchableOpacity
+                    activeOpacity={gStyle.activeOpacity}
+                    key={index.toString()}
+                    onPress={() => {
+                      if (isImage) {
+                        this.setState({
+                          imagePath: pathToFile,
+                          viewImage: true
+                        });
+                      } else {
+                        dirArray.push(item);
+
+                        const newActiveDir = dirArray.join('/');
+
+                        this.setState(
+                          {
+                            dirActive: newActiveDir,
+                            dirArray,
+                            viewImage: false
+                          },
+                          this.displayDirectory
+                        );
+                      }
+                    }}
+                    style={styles.lineItem}
+                  >
+                    <View style={gStyle.flexRowAlignCenter}>
+                      {isFile ? (
+                        <SvgImage size={18} />
+                      ) : (
+                        <SvgFolder size={18} />
+                      )}
+                      <Text style={styles.lineItemText}>{item}</Text>
+                    </View>
+
+                    {isImage && (
+                      <Image
+                        source={{ uri: pathToFile }}
+                        style={styles.imagePreview}
+                      />
+                    )}
+                  </TouchableOpacity>
+                );
+              })}
+          </ScrollView>
+        </View>
 
         {viewImage && (
           <View style={styles.containerImageView}>
@@ -369,7 +370,7 @@ const styles = StyleSheet.create({
     ...gStyle.mH2,
     backgroundColor: '#393e46',
     borderRadius: 8,
-    height: 480,
+    height: 200,
     padding: 8
   },
   containerHeader: {
@@ -411,6 +412,7 @@ const styles = StyleSheet.create({
     width: 48
   },
   containerImageView: {
+    ...gStyle.mT2,
     ...gStyle.p2,
     backgroundColor: '#0d1117'
   },
