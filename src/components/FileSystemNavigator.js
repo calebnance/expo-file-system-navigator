@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import { fonts, gStyle } from '../constants';
+import { fonts, func, gStyle } from '../constants';
 
 // icons
 import SvgCornerLeftUp from '../icons/Svg.CornerLeftUp';
@@ -106,29 +106,31 @@ class FileSystemNavigator extends React.Component {
       // console.log('newContentsSorted', newContentsSorted);
       // console.log('=================');
 
-      // const returnedData = await Promise.all(
-      //   Object.keys(docDirContents).map(async (item) => {
-      // const directory = docDirContents[item];
-      // console.log('item', item);
-      // console.log('directory', directory);
-      // const dirFullPath = `${currentDir}${directory}`;
-      // const dirInfo = await FileSystem.getInfoAsync(dirFullPath);
-      // const dirContents = await FileSystem.readDirectoryAsync(dirFullPath);
-      // console.log('dirInfo', dirInfo);
-      // console.log('currentDir', currentDir);
-      // console.log('dirFullPath', dirFullPath);
-      // console.log('size', func.bytesToSize(dirInfo.size));
-      // const timestamp = dirInfo.modificationTime;
-      // const date = new Date(timestamp * 1000);
-      // const iso = date
-      //   .toISOString()
-      //   .match(/(\d{4}\-\d{2}\-\d{2})T(\d{2}:\d{2}:\d{2})/);
-      // console.log('iso', iso);
+      const returnedData = await Promise.all(
+        files.map(async (file) => {
+          const dirFullPath = `${currentDir}${file}`;
+          console.log('dirFullPath', dirFullPath);
+          const fileInfo = await FileSystem.getInfoAsync(dirFullPath);
+          // const dirContents = await FileSystem.readDirectoryAsync(dirFullPath);
+          console.log('fileInfo', fileInfo);
+          // console.log('currentDir', currentDir);
+          // console.log('dirFullPath', dirFullPath);
+          console.log('size', func.bytesToSize(fileInfo.size));
 
-      // const utcSeconds = dirInfo.modificationTime;
-      // const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
-      // d.setUTCSeconds(utcSeconds);
-      // console.log('d', d);
+          // const timestamp = fileInfo.modificationTime;
+          // const date = new Date(timestamp * 1000);
+          // const iso = date
+          //   .toISOString()
+          //   .match(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/);
+          // console.log('iso', iso);
+
+          // const utcSeconds = fileInfo.modificationTime;
+          // const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+          // d.setUTCSeconds(utcSeconds);
+          // console.log('d', d);
+          // console.log('================');
+        })
+      );
 
       // console.log('dirContents', dirContents);
       // console.log('==================');
