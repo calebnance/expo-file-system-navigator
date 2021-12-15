@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import { fonts, func, gStyle } from '../constants';
+import { fonts, gStyle } from '../constants';
 
 // icons
 import SvgCornerLeftUp from '../icons/Svg.CornerLeftUp';
