@@ -370,7 +370,7 @@ const styles = StyleSheet.create({
     ...gStyle.mH2,
     backgroundColor: '#393e46',
     borderRadius: 8,
-    height: 200,
+    height: 340,
     padding: 8
   },
   containerHeader: {
@@ -418,7 +418,7 @@ const styles = StyleSheet.create({
   },
   imageView: {
     backgroundColor: '#909090',
-    height: 240,
+    height: 100,
     resizeMode: 'contain',
     width: '100%'
   },
