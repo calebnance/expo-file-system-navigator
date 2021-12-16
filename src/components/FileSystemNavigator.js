@@ -10,7 +10,7 @@ import {
   View
 } from 'react-native';
 import * as FileSystem from 'expo-file-system';
-import { fonts, func, gStyle } from '../constants';
+import { device, fonts, func, gStyle } from '../constants';
 
 // icons
 import SvgCornerLeftUp from '../icons/Svg.CornerLeftUp';
@@ -46,6 +46,7 @@ class FileSystemNavigator extends React.Component {
 
   onChangeDirText(text) {
     const letterAndSpaceRegex = /^[A-Za-z ]+$/;
+
     // if nothing or spaces, set to null
     if (text.length === 0 || text === ' ') {
       this.setState({
@@ -106,31 +107,31 @@ class FileSystemNavigator extends React.Component {
       // console.log('newContentsSorted', newContentsSorted);
       // console.log('=================');
 
-      const returnedData = await Promise.all(
-        files.map(async (file) => {
-          const dirFullPath = `${currentDir}${file}`;
-          console.log('dirFullPath', dirFullPath);
-          const fileInfo = await FileSystem.getInfoAsync(dirFullPath);
-          // const dirContents = await FileSystem.readDirectoryAsync(dirFullPath);
-          console.log('fileInfo', fileInfo);
-          // console.log('currentDir', currentDir);
-          // console.log('dirFullPath', dirFullPath);
-          console.log('size', func.bytesToSize(fileInfo.size));
-
-          // const timestamp = fileInfo.modificationTime;
-          // const date = new Date(timestamp * 1000);
-          // const iso = date
-          //   .toISOString()
-          //   .match(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/);
-          // console.log('iso', iso);
-
-          // const utcSeconds = fileInfo.modificationTime;
-          // const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
-          // d.setUTCSeconds(utcSeconds);
-          // console.log('d', d);
-          // console.log('================');
-        })
-      );
+      // const returnedData = await Promise.all(
+      //   files.map(async (file) => {
+      //     const dirFullPath = `${currentDir}${file}`;
+      //     console.log('dirFullPath', dirFullPath);
+      //     const fileInfo = await FileSystem.getInfoAsync(dirFullPath);
+      //     // const dirContents = await FileSystem.readDirectoryAsync(dirFullPath);
+      //     console.log('fileInfo', fileInfo);
+      //     // console.log('currentDir', currentDir);
+      //     // console.log('dirFullPath', dirFullPath);
+      //     console.log('size', func.bytesToSize(fileInfo.size));
+      //
+      //     // const timestamp = fileInfo.modificationTime;
+      //     // const date = new Date(timestamp * 1000);
+      //     // const iso = date
+      //     //   .toISOString()
+      //     //   .match(/(\d{4}-\d{2}-\d{2})T(\d{2}:\d{2}:\d{2})/);
+      //     // console.log('iso', iso);
+      //
+      //     // const utcSeconds = fileInfo.modificationTime;
+      //     // const d = new Date(0); // The 0 there is the key, which sets the date to the epoch
+      //     // d.setUTCSeconds(utcSeconds);
+      //     // console.log('d', d);
+      //     // console.log('================');
+      //   })
+      // );
 
       // console.log('dirContents', dirContents);
       // console.log('==================');
@@ -258,6 +259,7 @@ class FileSystemNavigator extends React.Component {
               <Text style={styles.pathText}>{`/${dirActive}`}</Text>
             </View>
           </View>
+
           <ScrollView
             contentContainerStyle={styles.containerDirectory}
             showsVerticalScrollIndicator={false}
@@ -370,7 +372,7 @@ const styles = StyleSheet.create({
   },
   containerScrollView: {
     ...gStyle.mH2,
-    backgroundColor: '#393e46',
+    // backgroundColor: '#393e46',
     borderRadius: 8,
     height: 340,
     padding: 8
@@ -401,11 +403,12 @@ const styles = StyleSheet.create({
     ...gStyle.pH1,
     backgroundColor: '#0d1117',
     borderRadius: 4,
-    height: 64
+    height: 64,
+    width: device.width / 2
   },
   lineItemText: {
     ...gStyle.mL1,
-    color: '#ffffff',
+    // color: '#ffffff',
     fontFamily: fonts.sourceCodeProReg
   },
   imagePreview: {
