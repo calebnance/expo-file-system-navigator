@@ -1,8 +1,8 @@
 import * as React from 'react';
 import {
   Button,
+  FlatList,
   Image,
-  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -260,14 +260,13 @@ class FileSystemNavigator extends React.Component {
             </View>
           </View>
 
-          <ScrollView
-            contentContainerStyle={styles.containerDirectory}
-            showsVerticalScrollIndicator={false}
-          >
-            {dirContents &&
-              dirContents.map((item, index) => {
-                // console.log('item', item);
-                // console.log('---------------------');
+          {dirContents && (
+            <FlatList
+              contentContainerStyle={styles.containerDirectory}
+              data={dirContents}
+              keyExtractor={(item) => item}
+              numColumns={2}
+              renderItem={({ item }) => {
                 const isFile = item.includes('.');
                 const isImage = /\.(gif|jpe?g|png|webp|bmp)$/i.test(item);
                 const pathToFile = `${dirRoot}${dirActive}${item}`;
@@ -275,7 +274,6 @@ class FileSystemNavigator extends React.Component {
                 return (
                   <TouchableOpacity
                     activeOpacity={gStyle.activeOpacity}
-                    key={index.toString()}
                     onPress={() => {
                       if (isImage) {
                         this.setState({
@@ -316,8 +314,10 @@ class FileSystemNavigator extends React.Component {
                     )}
                   </TouchableOpacity>
                 );
-              })}
-          </ScrollView>
+              }}
+              showsVerticalScrollIndicator={false}
+            />
+          )}
         </View>
 
         {viewImage && (
@@ -399,12 +399,13 @@ const styles = StyleSheet.create({
   },
   lineItem: {
     ...gStyle.flexRowSpace,
+    ...gStyle.mR1,
     ...gStyle.mT1,
     ...gStyle.pH1,
-    backgroundColor: '#0d1117',
+    // backgroundColor: 'red',
     borderRadius: 4,
     height: 64,
-    width: device.width / 2
+    width: Math.floor(device.width / 2) - 28
   },
   lineItemText: {
     ...gStyle.mL1,
